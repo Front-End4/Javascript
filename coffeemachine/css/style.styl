@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css?family=Plaster');
+
+html
+    min-height 100%
+    display: flex
+    font-family: 'Plaster', cursive;
+body
+    flex-grow: 1
+    display: flex
+    align-items: center
+    justify-content: center
+
+.coffie
+    min-width 500px
+    min-height: 500px
+    display: flex
+    flex-direction: column
+    &__top
+        background-color: lightgrey
+        border-top-left-radius: 20px
+        border-top-right-radius: 20px
+        border-bottom-left-radius: 60px
+        border-bottom-right-radius: 60px
+        min-height: 100px
+        border: 2px solid grey
+        padding: 20px 50px
+        box-sizing: border-box
+        display: flex
+        align-items: center
+    &__buttons
+        border: 2px solid black
+        background-color: whitesmoke
+        display: flex
+        flex-direction: column
+        padding: 10px
+        margin-right: 10px
+        * + *
+            margin-top 10px
+    &__power, &__go
+        border-radius: 50%
+        width: 42px
+        height: 42px
+        font-size: 18px
+        color: white
+        text-transform: uppercase
+    &__power
+        background-color: red
+    &__go
+        background-color: blue
+    &__interface
+        flex-grow: 1
+        border: 2px solid black
+        align-self: stretch
+        background-color: whitesmoke
+        color: darkgreen
+        font-size: 32px
+        padding: 10px
+        text-align: center
+        // text-transform: uppercase
+    &__status
+        width: 10px
+    &__body
+        flex-grow: 1
+        position relative
+    &__base
+        background-color: lightgrey
+        min-width: 75%
+        height 100%
+        position absolute
+        left 50%
+        transform: translateX(-50%)
+        border-left: 1px solid black
+        border-right: 1px solid black
+        top: 0
+    &__crane
+        position absolute
+        top 0
+        left 50%
+        transform: translateX(-50%)
+        background-color: whitesmoke
+        width: 70px
+        height 50px
+        border: 1px solid black
+        border-top: none
+        border-bottom-left-radius: 35px
+        border-bottom-right-radius: 35px
+    &__bot
+        background-color: lightgrey
+        min-height: 50px
+        border-top-left-radius: 20px
+        border-top-right-radius: 20px
+        border: 2px solid grey
+    &__cup
+        position relative
+        z-index 1
+        max-width: 300px
+        margin: 0 auto
+        padding-top: 120px;
+        padding-left: 25px;
+    img
+        max-width: 100%
+        display: block
