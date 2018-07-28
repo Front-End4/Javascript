@@ -1,4 +1,7 @@
 let data = [];
+const content = document.getElementById('content');
+const submit = document.getElementById("submit");
+let message = document.getElementById("message");
 
 if (read()) {
     data = read();
@@ -11,8 +14,7 @@ else {
  * @returns array of data
  */
 function read() {
-    let _data = localStorage.getItem("data").split(',');
-    return _data;
+    return localStorage.getItem("data") ? localStorage.getItem("data").split(',') : [];
 }
 /**
  * @param {array of data} _data 
@@ -29,10 +31,19 @@ function update(_data) {
 }
 
 function show(_data) {
-    let data = _data.split(',');
     for (let i = 0; i < data.length; i++) {
-        document.write(`<div>${data[i]}</div>`);
+        content.innerHTML += (`
+        <div class="col exlarge-w-1-4 large-w-1-3 medium-w-1-2 small-w-1-1">
+            <div class="notes__wrapper">
+                <p class="notes__data">${data[i]}</p>
+            </div>
+        </div>
+        `);
     }
+}
+
+function clear() {
+    content.innerHTML = '';
 }
 
 show(data);
@@ -40,3 +51,25 @@ show(data);
 function add(_data, _string) {
     _data.push(_string);
 }
+
+submit.addEventListener("click", function() {
+    let messageText = message.value;
+    msnry.destroy();
+    add(data, messageText);
+    update(data);
+    clear();
+    show(data);
+    msnry = new Masonry( content, {
+        itemSelector: '.col'
+    });
+    console.log(this);
+    this.value = "Отправлено";
+    setTimeout(() => {
+        console.log(this);
+        this.value = "Отправить";
+    }, 3000);
+});
+
+var msnry = new Masonry( content, {
+  itemSelector: '.col'
+});
