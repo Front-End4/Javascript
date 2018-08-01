@@ -10,6 +10,12 @@ class Calculator {
         const self = this;
         document.addEventListener('keypress', function (e) {
             let character = String.fromCharCode(e.keyCode || e.charCode);
+            console.log(character);
+            // switch (character){
+            //     case '+':
+
+            // }
+            // // let character = characterNum ;
             switch (character) {
                 case '+':
                     self.action = character;
@@ -21,19 +27,28 @@ class Calculator {
                     self.tempValue = self.firstValue;
                     self.firstValue = '';
                     break;
+                case '~':
+                    self.firstValue = self.firstValue.substring(0, self.firstValue.length-1);
+                    self.SetValue(self.firstValue);
+                    break
                 case '=':
                     switch (self.action) {
                         case '+':
-                            self.firstValue = parseInt(self.tempValue) + parseInt(self.firstValue);
+                            self.firstValue = parseFloat(self.tempValue) + parseFloat(self.firstValue);
                             break;
                         case '-':
-                            self.firstValue = parseInt(self.tempValue) - parseInt(self.firstValue);
+                            self.firstValue = parseFloat(self.tempValue) - parseFloat(self.firstValue);
                             break;
                     }
                     break;
                 default:
-                    self.firstValue += character;
+                        self.firstValue += character;
                     break;
+            }
+            switch (isNaN(self.firstValue)){
+                case true:
+                    self.firstValue = 'ВВОДИТЕ ТОЛЬКО ЦИФРЫ! ОбНОВИТЕ СТРАНИЦУ!';
+                    break
             }
             self.SetValue(self.firstValue);
         })
