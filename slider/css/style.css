@@ -1,0 +1,51 @@
+img {
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+}
+html, body {
+    margin: 0;
+}
+.css-slider {
+    position: relative;
+    max-width: 100%;
+    height: 100vh;
+    display: flex;
+    padding-top: 80vh;
+    box-sizing: border-box;
+}
+.css-slider__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    opacity: 0;
+    transition: ease .3s opacity;
+}
+.css-slider__element {
+    flex: 1;
+    max-height: 20vh;
+    overflow: hidden;
+}
+.css-slider__preview {
+    height: 100%;
+    filter: grayscale(1);
+    opacity: .8;
+}
+input[type="radio"] {
+    display: none;
+}
+input[type="radio"]:checked + .css-slider__item {
+    z-index: 2;
+    opacity: 1;
+}
+input[type="radio"]:hover + .css-slider__item + .css-slider__preview {
+    filter: grayscale(0);
+}
+input[type="radio"]:checked + .css-slider__item + .css-slider__preview {
+    opacity: 1;
+}
