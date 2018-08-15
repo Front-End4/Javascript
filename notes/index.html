@@ -13,6 +13,13 @@
         <div class="row">
           <div class="col col-w-1-1">
             <div class="input__wrapper">
+              <div class="select">
+                <input type="radio" name="type" id="localstorage" value="localstorage">
+                <label for="localstorage">localstorage</label>
+                <input type="radio" name="type" id="file" value="file">
+                <label for="file">file</label>
+                <input type="submit" value="start" id="start">
+              </div>
               <h1 class="input__caption">TEST YOUR LUCK</h1>
               <div class="input__field">
                 <textarea id="message" class="input__data" name="" rows="6"></textarea>
@@ -33,5 +40,40 @@
     </div>
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="./js/scripts.js"></script>
+    <script>
+        let start = document.getElementById('start');
+        start.addEventListener('click', function () {
+          let localstorage = document.getElementById('localstorage');
+          let file = document.getElementById('file');
+          let crud;
+          if (localstorage.checked) {
+            crud = new CRUD({
+                dataType: 'localstorage'
+            });
+          }
+          if (file.checked) {
+            crud = new CRUD({
+                dataType: 'file'
+            });
+          }
+          let layout = new Layout({});
+          var msnry = new Masonry(layout._container, {
+            itemSelector: '.col'
+          });
+          
+          layout.OnSubmit(function () {
+              let messageText = layout._message.value;
+              msnry.destroy();
+              crud.Update(messageText);
+              layout.Clear();
+              layout.Show(crud._data);
+              msnry = new Masonry( layout._container, {
+                  itemSelector: '.col'
+              });
+          })
+          
+          layout.Show(crud._data);
+        })
+    </script>
   </body>
 </html>

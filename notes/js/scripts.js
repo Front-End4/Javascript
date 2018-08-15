@@ -3,13 +3,24 @@ class CRUD {
         this._data = args.dataBase ? args.dataBase : [];
         this._dataName = args.dataName ? args.dataName : 'data';
         this.DEBUG = args.debug ? args.debug : false;
+        this._dataType = args.dataType ? args.dataType : 'localstorage';
         this.Init();
     }
     /**
      * main function
      */
     Init(){
-        this.Read();
+        switch (this._dataType) {
+            case 'localstorage':
+                this.LocalStorageGet();
+                break;
+            case 'file':
+                this.FileRead();
+                break;
+            default:
+            this.LocalStorageGet();
+                break;
+        }
         if (this._data != [] && this.DEBUG) {
             console.message(`Array is empty`);
             this.Create();
@@ -21,24 +32,65 @@ class CRUD {
     // ShowProps(){
     //     console.log(this._dataName);
     // }
+
     /**
-     * return an array from localstorage if exist
+     * get an array from localstorage if exist
      */
-    Read(){
+    LocalStorageGet(){
         this._data = localStorage.getItem(this._dataName) ? localStorage.getItem(this._dataName).split(',') : [];
     }
     /** 
-     * create data in localstorage
+     * set data to localstorage
      */
-    Create(){
+    LocalStorageSet(){
         localStorage.setItem(this._dataName, this._data);
+    }
+    FileRead(){
+        var xhr = new XMLHttpRequest();
+        let self = this;
+        xhr.open('GET', '../data/data.txt', false);
+        xhr.onreadystatechange = function () {
+            if (xhr.status != 200) {
+                // обработать ошибку
+                alert( xhr.status + ': error ' + xhr.statusText ); // пример вывода: 404: Not Found
+            } else {
+                // вывести результат
+                self._data = xhr.responseText ? xhr.responseText.split(',') : [];
+            }
+        }
+        xhr.send();
+    }
+    FileUpdate(_string) {
+        // localStorage.setItem(this._dataName, this._data);
+        var txtFile = new XMLHttpRequest();
+        txtFile.open('post', '../action/save.php');
+        txtFile.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        txtFile.onloadend = function () {
+            var newData = txtFile.responseText;
+            if (txtFile.readyState == 4 && txtFile.status == "200") {
+                console.log('success ' + newData);
+            } else {
+                console.log('error ' + newData);
+            }
+        }
+        txtFile.send("data=" + this._data);
     }
     /** 
      * update data in localstorage
      */
     Update(_string){
         this._data.push(_string);
-        localStorage.setItem(this._dataName, this._data);
+        switch (this._dataType) {
+            case 'localstorage':
+                this.LocalStorageSet();
+                break;
+            case 'file':
+                this.FileUpdate(_string);
+                break;
+            default:
+            this.LocalStorageSet();
+                break;
+        }
     }
     Delete(){
 
@@ -75,22 +127,3 @@ class Layout {
         this._container.innerHTML = '';
     }
 }
-
-let crud = new CRUD({});
-let layout = new Layout({});
-var msnry = new Masonry(layout._container, {
-  itemSelector: '.col'
-});
-
-layout.OnSubmit(function () {
-    let messageText = layout._message.value;
-    msnry.destroy();
-    crud.Update(messageText);
-    layout.Clear();
-    layout.Show(crud._data);
-    msnry = new Masonry( layout._container, {
-        itemSelector: '.col'
-    });
-})
-
-layout.Show(crud._data);
