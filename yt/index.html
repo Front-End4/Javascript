@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div class="player">
+        <div class="player__status" id="status">Loading...</div>
+        <div id="player" class="player__player"></div>
+        <div class="player__buttons">
+            <div class="btn " id="btn--play">play</div>
+            <div class="btn " id="btn--stop">stop</div>
+        </div>
+    </div>
+
+    <script>
+    
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: 'M7lc1UVf-VE',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                },
+                playerVars: {
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 0,
+                    fs: 1
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            // event.target.playVideo();
+            document.getElementById('status').innerText = "Pause";
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+
+        function onPlayerStateChange(event) {
+            if (player.getPlayerState() == 5) {
+                document.getElementById('status').innerText = "Pause";
+            }
+        }
+        
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+        var btn_stop = document.getElementById('btn--stop');
+        btn_stop.addEventListener('click', stopVideo);
+
+        function playVideo() {
+            player.playVideo();
+        }
+
+        var btn_play = document.getElementById('btn--play');
+        btn_play.addEventListener('click', playVideo);
+    </script>
+    <script src="./js/scripts.js"></script>
+</body>
+
+</html>
