@@ -54,7 +54,7 @@
         // 4. The API will call this function when the video player is ready.
         function onPlayerReady(event) {
             // event.target.playVideo();
-            document.getElementById('status').innerText = "Pause";
+            changeStatus("Pause");
         }
 
         // 5. The API calls this function when the player's state changes.
@@ -63,7 +63,7 @@
 
         function onPlayerStateChange(event) {
             if (player.getPlayerState() == 5) {
-                document.getElementById('status').innerText = "Pause";
+            changeStatus("Pause");
             }
         }
         
@@ -80,6 +80,11 @@
 
         var btn_play = document.getElementById('btn--play');
         btn_play.addEventListener('click', playVideo);
+
+
+        function changeStatus(text) {
+            document.getElementById('status').innerText = text;
+        }
     </script>
     <script src="./js/scripts.js"></script>
 </body>
